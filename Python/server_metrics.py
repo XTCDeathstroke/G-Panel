@@ -26,7 +26,7 @@ def read_config(file_path):
     return config
 
 # Global variable to store configuration
-config = read_config('config.txt')
+config = read_config('../config.txt')
 
 def update_metrics():
     while True:
