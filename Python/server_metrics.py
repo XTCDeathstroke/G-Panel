@@ -45,6 +45,17 @@ def update_metrics():
             if config.get('SHOW_DISK_USAGE', '').lower() == 'true':
                 disk_usage = psutil.disk_usage('/')
                 metrics['Disk Usage'] = f"{disk_usage.percent}%"
+            if config.get('SHOW_AVAILABLE_CPU', '').lower() == 'true':
+                metrics['Available CPU'] = f"{psutil.cpu_count()} Cores"
+            if config.get('SHOW_AVAILABLE_GPU', '').lower() == 'true':
+                # Add code to get available GPU resources (if available)
+                metrics['Available GPU'] = "N/A"  # Placeholder
+            if config.get('SHOW_AVAILABLE_MEMORY', '').lower() == 'true':
+                memory_info = psutil.virtual_memory()
+                metrics['Available Memory'] = f"{memory_info.available / (1024**3):.2f} GB"
+            if config.get('SHOW_AVAILABLE_DISK_SPACE', '').lower() == 'true':
+                disk_usage = psutil.disk_usage('/')
+                metrics['Available Disk Space'] = f"{disk_usage.free / (1024**3):.2f} GB"
 
             # Add more metrics based on configuration settings
 
@@ -63,7 +74,6 @@ update_thread.start()
 
 @app.route('/')
 def homepage():
-    # Fetch system specifications
     system_info = {
         'Operating System': platform.platform(),
         'Processor': cpuinfo.get_cpu_info()['brand_raw'],
