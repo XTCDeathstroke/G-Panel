@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Server Health Overview</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"> <!-- Link to the CSS file -->
+</head>
+<body>
+    <h1>Server Health Overview</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Server</th>
+                <th>CPU Usage</th>
+                <th>Memory Utilization</th>
+                <th>Disk Usage</th>
+                <th>Network Activity</th>
+                <th>Alerts</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Server 1</td>
+                <td id="cpu-usage"></td>
+                <td id="memory-utilization"></td>
+                <td id="disk-usage"></td>
+                <td id="network-activity"></td>
+                <td class="critical" id="alerts"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+    fetch('/metrics')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('cpu-usage').innerText = data['CPU Usage'];
+            document.getElementById('memory-utilization').innerText = data['Memory Utilization'];
+            document.getElementById('disk-usage').innerText = data['Disk Usage'];
+            document.getElementById('network-activity').innerText = data['Network Activity'];
+            document.getElementById('alerts').innerText = data['Alerts'].join(', ');
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+</html>
