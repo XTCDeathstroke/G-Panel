@@ -1,92 +1,64 @@
-# server_metrics.py
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Server Metrics</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Server Metrics</h1>
+        
+        {% if config.get('SHOW_CPU_USAGE', '').lower() == 'true' %}
+            <div class="section">
+                <h2>CPU Usage</h2>
+                <p>{{ metrics['CPU Usage'] }}</p>
+            </div>
+        {% endif %}
 
-import time
-import threading
-from flask import Flask, jsonify, render_template
-import psutil
-import platform
-import cpuinfo
+        {% if config.get('SHOW_GPU_USAGE', '').lower() == 'true' %}
+            <div class="section">
+                <h2>GPU Usage</h2>
+                <p>{{ metrics['GPU Usage'] }}</p>
+            </div>
+        {% endif %}
 
-app = Flask(__name__)
+        {% if config.get('SHOW_MEMORY_USAGE', '').lower() == 'true' %}
+            <div class="section">
+                <h2>Memory Usage</h2>
+                <p>{{ metrics['Memory Usage'] }}</p>
+            </div>
+        {% endif %}
 
-# Read configuration from config.txt in the same directory
-def read_config(file_path):
-    config = {}
-    try:
-        with open(file_path, 'r') as file:
-            for line in file:
-                line = line.strip()
-                if line and not line.startswith('#'):  # Ignore comments and blank lines
-                    key, value = line.split('=')
-                    config[key.strip()] = value.strip()
-    except FileNotFoundError:
-        print(f"Error: Configuration file '{file_path}' not found.")
-    except Exception as e:
-        print(f"Error reading configuration file '{file_path}': {e}")
-    return config
+        {% if config.get('SHOW_DISK_USAGE', '').lower() == 'true' %}
+            <div class="section">
+                <h2>Disk Usage</h2>
+                <p>{{ metrics['Disk Usage'] }}</p>
+            </div>
+        {% endif %}
 
-# Global variable to store configuration
-config = read_config('config.txt')
+        <!-- Add more sections for other metrics based on configuration settings -->
 
-def update_metrics():
-    while True:
-        try:
-            # Update the metrics
-            metrics = {}
+        <!-- Display System Specifications -->
+        {% if config.get('OPERATING_SYSTEM', '').lower() == 'true' %}
+            <div class="section">
+                <h2>Operating System</h2>
+                <p>{{ system_info['Operating System'] }}</p>
+            </div>
+        {% endif %}
 
-            if config.get('SHOW_CPU_USAGE', '').lower() == 'true':
-                metrics['CPU Usage'] = f"{psutil.cpu_percent()}%"
-            if config.get('SHOW_GPU_USAGE', '').lower() == 'true':
-                # Add code to get GPU usage (if available)
-                metrics['GPU Usage'] = "N/A"  # Placeholder
-            if config.get('SHOW_MEMORY_USAGE', '').lower() == 'true':
-                memory_info = psutil.virtual_memory()
-                metrics['Memory Usage'] = f"{memory_info.percent}%"
-            if config.get('SHOW_DISK_USAGE', '').lower() == 'true':
-                disk_usage = psutil.disk_usage('/')
-                metrics['Disk Usage'] = f"{disk_usage.percent}%"
-            if config.get('SHOW_AVAILABLE_CPU', '').lower() == 'true':
-                metrics['Available CPU'] = f"{psutil.cpu_count()} Cores"
-            if config.get('SHOW_AVAILABLE_GPU', '').lower() == 'true':
-                # Add code to get available GPU resources (if available)
-                metrics['Available GPU'] = "N/A"  # Placeholder
-            if config.get('SHOW_AVAILABLE_MEMORY', '').lower() == 'true':
-                memory_info = psutil.virtual_memory()
-                metrics['Available Memory'] = f"{memory_info.available / (1024**3):.2f} GB"
-            if config.get('SHOW_AVAILABLE_DISK_SPACE', '').lower() == 'true':
-                disk_usage = psutil.disk_usage('/')
-                metrics['Available Disk Space'] = f"{disk_usage.free / (1024**3):.2f} GB"
+        {% if config.get('PROCESSOR', '').lower() == 'true' %}
+            <div class="section">
+                <h2>Processor</h2>
+                <p>{{ system_info['Processor'] }}</p>
+            </div>
+        {% endif %}
 
-            # Add more metrics based on configuration settings
+        <!-- Add more sections for other system specifications -->
 
-            # Store the metrics in a global variable (or database, etc.) accessible by the Flask routes
-            app.metrics = metrics
+    </div>
+</body>
+</html>
 
-            # Sleep for the specified update frequency
-            time.sleep(int(config.get('UPDATE_FREQUENCY', 60)))  # Default update frequency is 60 seconds
-        except Exception as e:
-            print(f"Error updating metrics: {e}")
-
-# Start the thread to update metrics
-update_thread = threading.Thread(target=update_metrics)
-update_thread.daemon = True  # Daemonize the thread so it will be terminated when the main thread exits
-update_thread.start()
-
-@app.route('/')
-def homepage():
-    system_info = {
-        'Operating System': platform.platform(),
-        'Processor': cpuinfo.get_cpu_info()['brand_raw'],
-        # Add more system specifications as needed
-    }
-    return render_template('index.html', config=config, metrics=app.metrics, system_info=system_info)
-
-@app.route('/metrics')
-def metrics():
-    # Return the metrics stored in the global variable
-    return jsonify(app.metrics)
-
-# Run the Flask application
-if __name__ == '__main__':
-    app.run(debug=True, host=config.get('IP_ADDRESS', '127.0.0.1'))
 
