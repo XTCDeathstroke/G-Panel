@@ -1,4 +1,100 @@
-# config.txt
+# Server Configuration Settings 
+# Indicates whether the server is running locally or on a remote machine
+LOCAL=false
+# IP address of the server
+IP_ADDRESS=192.168.1.52
 
-LOCAL=true
-IP_ADDRESS=192.168.1.100  # Replace with the actual IP address
+# Web Application Configuration Settings 
+
+# Update Frequency
+# Frequency (in seconds) at which the web application updates its data
+UPDATE_FREQUENCY=60
+
+# Hardware Usage
+# Whether to show CPU usage in the web application
+SHOW_CPU_USAGE=true
+# Whether to show GPU usage in the web application
+SHOW_GPU_USAGE=true
+# Whether to show memory usage in the web application
+SHOW_MEMORY_USAGE=true
+# Whether to show disk usage in the web application
+SHOW_DISK_USAGE=true
+
+# Hardware Total Available
+SHOW_AVAILABLE_CPU=true
+SHOW_AVAILABLE_GPU=true
+SHOW_AVAILABLE_MEMORY=true
+SHOW_AVAILABLE_DISK_SPACE=true
+
+
+
+
+# High Usage Thresholds
+# Threshold for CPU usage alert (percentage)
+CPU_USAGE_THRESHOLD=70
+# Threshold for memory usage alert (percentage)
+MEMORY_USAGE_THRESHOLD=80
+# Threshold for GPU usage alert (percentage)
+GPU_USAGE_THRESHOLD=75
+# Threshold for disk usage alert (percentage)
+DISK_USAGE_THRESHOLD=90
+
+# Hard Specifications
+# Whether to show CPU specifications in the web application
+SHOW_CPU_SPECS=true
+# Whether to show GPU specifications in the web application
+SHOW_GPU_SPECS=true
+# Whether to show memory specifications in the web application
+SHOW_MEMORY_SPECS=true
+# Whether to show disk specifications in the web application
+SHOW_DISK_SPECS=true
+
+# System Information
+# Whether to show operating system information in the web application
+OPERATING_SYSTEM=true
+# Whether to show processor information in the web application
+PROCESSOR=true
+# Whether to show memory information in the web application
+MEMORY=true
+# Whether to show storage information in the web application
+STORAGE=true
+# Whether to show graphics card information in the web application
+GRAPHICS_CARD=true
+# Whether to show system uptime in the web application
+SYSTEM_UPTIME=true
+# Whether to show system updates in the web application
+SYSTEM_UPDATES=true
+# Whether to show system logs in the web application
+SYSTEM_LOGS=true
+
+# CPU Cores
+# Whether to show the number of CPU cores in the web application
+SHOW_CPU_CORES=true
+
+# Memory Details
+# Whether to show total memory in the web application
+SHOW_TOTAL_MEMORY=true
+# Whether to show available memory in the web application
+SHOW_AVAILABLE_MEMORY=true
+
+# Network Activity
+# Whether to show network activity in the web application
+SHOW_NETWORK_ACTIVITY=true
+
+# Disk Space Alerts
+# Whether to show alerts for low disk space in the web application
+SHOW_DISK_SPACE_LOW_ALERT=true
+
+# Alert Configuration Settings 
+# Whether to show alerts for high CPU usage in the web application
+SHOW_CPU_USAGE_HIGH_ALERT=true
+# Whether to show alerts for high memory usage in the web application
+SHOW_MEMORY_HIGH_ALERT=true
+# Whether to show alerts for high GPU usage in the web application
+SHOW_GPU_USAGE_HIGH_ALERT=true
+# Whether to show alerts for high disk usage in the web application
+SHOW_DISK_USAGE_HIGH_ALERT=true
+
+# Disk Space Details
+# Whether to show total disk space in the web application
+SHOW_TOTAL_DISK_SPACE=true
