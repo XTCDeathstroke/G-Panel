@@ -14,7 +14,7 @@ def read_config(file_path):
                 config[key.strip()] = value.strip()
     return config
 
-config = read_config('config.txt')  # Read configuration from config.txt
+config = read_config('../config.txt')  # Read configuration from config.txt in parent directory
 
 # Determine host address based on configuration
 if config.get('LOCAL', '').lower() == 'true':
@@ -40,3 +40,4 @@ def metrics():
 
 if __name__ == '__main__':
     app.run(debug=True, host=host_address)  # Use host_address determined from config.txt
+
