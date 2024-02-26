@@ -1,6 +1,6 @@
 # server_metrics.py
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 import psutil
 
 app = Flask(__name__)
@@ -14,13 +14,17 @@ def read_config(file_path):
                 config[key.strip()] = value.strip()
     return config
 
-config = read_config('../config.txt')  # Read configuration from config.txt in parent directory
+config = read_config('../config.txt')  # Read configuration from config.txt in the parent directory
 
 # Determine host address based on configuration
 if config.get('LOCAL', '').lower() == 'true':
     host_address = '127.0.0.1'
 else:
     host_address = config.get('IP_ADDRESS', '127.0.0.1')  # Default to localhost if IP address is not provided
+
+@app.route('/')
+def homepage():
+    return render_template('index.html')
 
 @app.route('/metrics')
 def metrics():
@@ -39,5 +43,6 @@ def metrics():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, host=host_address)  # Use host_address determined from config.txt
+    app.run(debug=True, host=host_address)
+
 
